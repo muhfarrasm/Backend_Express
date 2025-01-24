@@ -59,6 +59,38 @@ router.get("/", (req, res) => {
     });
 });
 
+// Menampilkan detail penulis berdasarkan id_penulis
+router.get("/:id_penulis", (req, res) => {
+    const { id_penulis } = req.params;
+
+    connection.query(
+        "SELECT * FROM penulis WHERE id_penulis = ?",
+        [id_penulis],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal Server Error",
+                });
+            }
+
+            if (rows.length > 0) {
+                return res.status(200).json({
+                    status: true,
+                    message: "Success",
+                    data: rows[0],
+                });
+            } else {
+                return res.status(404).json({
+                    status: false,
+                    message: "Penulis not found",
+                });
+            }
+        }
+    );
+});
+
+
 // Mengupdate penulis
 router.put("/:id_penulis", [
     

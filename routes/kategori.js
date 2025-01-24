@@ -39,6 +39,38 @@ router.post("/store", [
     });
 });
 
+router.get("/:id_kategori", (req, res) => {
+    let id_kategori = req.params.id_kategori;
+    console.log(`Requested Kategori ID: ${id_kategori}`); // Logging
+    connection.query(
+        "SELECT * FROM kategori WHERE id_kategori = ?",
+        [id_kategori],
+        (err, rows) => {
+            console.log(`Query Result:`, err, rows); // Detailed logging
+            if (err) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal Server Error",
+                });
+            } else {
+                if (rows.length > 0) {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Success",
+                        data: rows,
+                    });
+                } else {
+                    return res.status(404).json({
+                        status: false,
+                        message: "Buku not found for this category",
+                    });
+                }
+            }
+        }
+    );
+});
+
+
 // Menampilkan daftar kategori
 router.get("/", (req, res) => {
     connection.query("SELECT * FROM kategori ORDER BY id_kategori DESC", (err, rows) => {
@@ -106,6 +138,8 @@ router.delete("/:id_kategori", (req, res) => {
             });
         }
     });
+
+
 });
 
 module.exports = router;

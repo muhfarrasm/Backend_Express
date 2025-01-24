@@ -61,6 +61,40 @@ router.post("/store", [
     });
 });
 
+// router.get("/:id_buku", (req, res) => {
+//     let id_buku = req.params.id_buku;
+//     connection.query(
+//         `SELECT buku.*, kategori.nama_kategori, penulis.nama_penulis, penerbit.nama_penerbit
+//         FROM buku
+//         JOIN kategori ON buku.id_kategori = kategori.id_kategori
+//         JOIN penulis ON buku.id_penulis = penulis.id_penulis
+//         JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit
+//         WHERE buku.id_buku = ?`, 
+//         [id_buku], 
+//         (err, rows) => {
+//             if (err) {
+//                 return res.status(500).json({
+//                     status: false,
+//                     message: "Internal Server Error",
+//                 });
+//             } else {
+//                 if (rows.length > 0) {
+//                     return res.status(200).json({
+//                         status: true,
+//                         message: "Success",
+//                         data: rows[0],
+//                     });
+//                 } else {
+//                     return res.status(404).json({
+//                         status: false,
+//                         message: "Buku not found",
+//                     });
+//                 }
+//             }
+//         }
+//     );
+// });
+
 //Detail
 router.get("/:id_buku", (req, res) => {
     let id_buku = req.params.id_buku;
@@ -88,6 +122,7 @@ router.get("/:id_buku", (req, res) => {
         }
     }
 }
+
 );
 });
 
@@ -127,6 +162,15 @@ router.put("/:id_buku", [
             });
         }
     });
+
+    // connection.query("SELECT id_kategori FROM kategori WHERE id_kategori = ?", [id_kategori], (err, rows) => {
+    //     if (err || rows.length === 0) {
+    //         return res.status(400).json({
+    //             status: false,
+    //             message: "Kategori tidak ditemukan",
+    //         });
+    //     }
+    // });
 });
 
 router.delete("/:id_buku", (req, res) => {
@@ -144,6 +188,15 @@ router.delete("/:id_buku", (req, res) => {
             });
         }
     });
+
+    // connection.query("SELECT id_kategori FROM kategori WHERE id_kategori = ?", [id_kategori], (err, rows) => {
+    //     if (err || rows.length === 0) {
+    //         return res.status(400).json({
+    //             status: false,
+    //             message: "Kategori tidak ditemukan",
+    //         });
+    //     }
+    // });
 });
 
 module.exports = router;

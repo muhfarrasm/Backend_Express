@@ -58,6 +58,47 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id_penerbit", (req, res) => {
+    const id_penerbit = req.params.id_penerbit;
+
+    // Validasi apakah id_penerbit ada
+    if (!id_penerbit) {
+        return res.status(400).json({
+            status: false,
+            message: "id_penerbit is required",
+        });
+    }
+
+    console.log(`Requested penerbit ID: ${id_penerbit}`); // Logging
+    connection.query(
+        "SELECT * FROM penerbit WHERE id_penerbit = ?",
+        [id_penerbit],
+        (err, rows) => {
+            console.log(`Query Result:`, err, rows); // Logging hasil query
+            if (err) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal Server Error",
+                });
+            } else {
+                if (rows.length > 0) {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Success",
+                        data: rows,
+                    });
+                } else {
+                    return res.status(404).json({
+                        status: false,
+                        message: "Penerbit not found",
+                    });
+                }
+            }
+        }
+    );
+});
+
+
 // Mengupdate penerbit
 router.put("/:id_penerbit", [
     
