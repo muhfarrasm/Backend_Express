@@ -85,7 +85,7 @@ router.get("/:id_penerbit", (req, res) => {
                     return res.status(200).json({
                         status: true,
                         message: "Success",
-                        data: rows,
+                        data: rows[0],
                     });
                 } else {
                     return res.status(404).json({

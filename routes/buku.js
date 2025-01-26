@@ -5,6 +5,38 @@ const { body, validationResult } = require("express-validator");
 const connection = require("../config/database");
 
 
+router.get("/kategori/:id_kategori", (req, res) => {
+    let id_kategori = req.params.id_kategori;
+    connection.query(
+        `SELECT buku.*, kategori.nama_kategori 
+         FROM buku 
+         JOIN kategori ON buku.id_kategori = kategori.id_kategori 
+         WHERE kategori.id_kategori = ?`,
+        [id_kategori],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Internal Server Error",
+                });
+            } else {
+                if (rows.length > 0) {
+                    return res.status(200).json({
+                        status: true,
+                        message: "Success",
+                        data: rows,
+                    });
+                } else {
+                    return res.status(404).json({
+                        status: false,
+                        message: "No books found for this category",
+                    });
+                }
+            }
+        }
+    );
+ });
+ 
 //getall
 router.get("/", (req, res) => {
     connection.query("SELECT * FROM buku ORDER BY id_buku DESC", (err, rows) => {
